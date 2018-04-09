@@ -1,0 +1,34 @@
+{
+  "name": "travelience/aida",
+  "description": "Minimalist Framework for quick development",
+  "homepage": "https://github.com/travelience/Aida",
+  "version": "1.0.4",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "xpromx",
+      "email": "xpromx@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.0.0",
+    "illuminate/http": "5.0.*|5.1.*",
+    "illuminate/validation": "5.0.*|5.1.*",
+    "hazzard/validation": "^1.0",
+    "swiftmailer/swiftmailer": "^6.0",
+    "facebook/graph-sdk": "^5.6",
+    "guzzlehttp/guzzle": "^6.2",
+    "illuminate/view": "~5",
+    "illuminate/events": "~5",
+    "monolog/monolog": "^1.23",
+    "illuminate/database": "5.1.8",
+    "illuminate/pagination": "5.0.*|5.1.*"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "Travelience\\Aida\\": "src/"
+    }
+  }
+}
