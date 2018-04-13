@@ -12,7 +12,6 @@ class Folders {
         $this->createFolder( ASSETS_PATH );
         $this->createFolder( ASSETS_PATH . '/views' );
         $this->createFolder( ASSETS_PATH . '/cache' );
-        $this->createFolder( ASSETS_PATH . '/logs' );
 
         $this->createFolder( CONFIG_PATH );
 

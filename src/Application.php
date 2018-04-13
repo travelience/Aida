@@ -15,11 +15,10 @@ class Application extends Singleton
 
     public function __construct()
     {
-
         session_start();
 
-        define('FRAMEWORK_PATH', str_replace('/src', '', __DIR__) );
-        define('ROOT_PATH', str_replace('/public', '', getcwd()) );
+        define('FRAMEWORK_PATH', str_replace('/src', '', __DIR__));
+        define('ROOT_PATH', str_replace('/public', '', getcwd()));
         define('CONFIG_PATH', ROOT_PATH .'/config');
         define('VIEWS_PATH', ROOT_PATH . '/views');
         define('ASSETS_PATH', ROOT_PATH.'/assets');
@@ -29,15 +28,14 @@ class Application extends Singleton
         $this->withHelpers();
         $this->withConfig();
         $this->runEvents('config');
-
     }
     
-    public function set( $key, $object ) 
+    public function set($key, $object)
     {
         $this->context[ $key ] = $object;
     }
 
-    public function use( $callback ) 
+    public function use($callback)
     {
         $this->on('before', $callback);
     }
@@ -45,84 +43,74 @@ class Application extends Singleton
     /*
         init | after | before | error
     */
-    public function on( $type, $callback ) 
+    public function on($type, $callback)
     {
         $this->events[$type][] = $callback;
     }
 
-    public function get( $path, $config=[], $callback=null )
+    public function get($path, $config=[], $callback=null)
     {
-        $this->route( $path, 'GET', $config, $callback );
+        $this->route($path, 'GET', $config, $callback);
     }
 
-    public function any( $path, $config=[], $callback=null )
+    public function any($path, $config=[], $callback=null)
     {
-        $this->route( $path, 'ANY', $config, $callback );
+        $this->route($path, 'ANY', $config, $callback);
     }
 
-    public function post( $path, $config, $callback=null )
+    public function post($path, $config, $callback=null)
     {
-        $this->route( $path, 'POST', $config, $callback );
+        $this->route($path, 'POST', $config, $callback);
     }
 
-    public function route( $path, $method, $config, $callback )
+    public function route($path, $method, $config, $callback)
     {
         $config['callback'] = $callback;
         $config['method'] = $method;
-        $name = $config['name'] ?? str_slug( $method .'_'. $path );
-        $this->router->register( $name, $path, $config );
+        $name = $config['name'] ?? str_slug($method .'_'. $path);
+        $this->router->register($name, $path, $config);
     }
 
 
-    public function render( $callback=false )
+    public function render($callback=false)
     {
-        
         $route = $this->req->getCurrentRoute();
 
-        if( isset($route['middlewares']) )
-        {
-            $this->router->runMiddlewares( $route['middlewares'], $this );
+        if (isset($route['middlewares'])) {
+            $this->router->runMiddlewares($route['middlewares'], $this);
         }
 
-        $this->runEvents('before');   
+        $this->runEvents('before');
 
-        if( is_callable($route['callback']) )
-        {
-            return $route['callback']( $this->req, $this->res );
+        if (is_callable($route['callback'])) {
+            return $route['callback']($this->req, $this->res);
         }
 
-        echo $this->res->render( $route['page'] );
+        echo $this->res->render($route['page']);
 
         $this->runEvents('after');
     }
 
 
-    public function run( $callback=false )
-    { 
-        
+    public function run($callback=false)
+    {
         $this->withEssentials();
         $this->runEvents('init');
 
         try {
-
-            if( $callback )
-            {
-                return $callback( $this->req, $this );
+            if ($callback) {
+                return $callback($this->req, $this);
             }
 
             return $this->render();
-
-        }catch( \Exception $e )
-        {
-
-            $res->log->error( $e->getMessage() );
+        } catch (\Exception $e) {
+            $res->log->error($e->getMessage());
 
             $this->runEvents('error');
         }
-        
     }
 
-    public function __get($name) 
+    public function __get($name)
     {
         if (isset($this->context[$name])) {
             return $this->context[$name];
@@ -131,33 +119,28 @@ class Application extends Singleton
         return null;
     }
 
-    public function runEvents( $type )
+    public function runEvents($type)
     {
-        if( !isset($this->events[ $type ]) )
-        {
+        if (!isset($this->events[ $type ])) {
             return false;
         }
 
         $events = $this->events[ $type ];
 
-        if( !$events )
-        {
+        if (!$events) {
             return false;
         }
 
-        foreach( $events as $middleware )
-        {
+        foreach ($events as $middleware) {
             if (is_callable($middleware)) {
                 $middleware($this->req, $this->res);
                 continue;
             }
             
-            if( is_object($middleware) ){
-                $middleware->handle( $this->req, $this->res);
+            if (is_object($middleware)) {
+                $middleware->handle($this->req, $this->res);
                 continue;
             }
         }
-        
     }
-
 }
