@@ -2,33 +2,33 @@
 
 namespace Travelience\Aida\Request;
 
-use Hazzard\Validation\Validator as BaseValidator;
+use Illuminate\Validation\Factory;
+use Illuminate\Translation\FileLoader;
+use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Translation\Translator;
 
 trait Validator {
 
-    public function validate( $rules=[], $input=false )
+    public function validate( $rules = [], $input=false )
     {
-        if( !$input )
-        {
+        if( !$input ) {
             $input = $this->all();
         }
 
         $this->errors = false;
         $locale = session('lang') ?? 'en';
 
-        $validator = new BaseValidator;
-        $validator->setLines( require FRAMEWORK_PATH.'/config/locales/'. $locale .'/validation.php' );
+        $fileLoader = new FileLoader(new Filesystem, FRAMEWORK_PATH.'/config/locales/'. $locale .'/validation.php', $locale);
+        $translator = new Illuminate\Translation\Translator($fileLoader, $locale);
+        $factory = new ValidatorFactory($translator);
 
-        $validator = $validator->make($input, $rules);
+        $validator = $factory->make($input, $rules);
 
-        if ($validator->fails()) {
-            
+        if ( $validator->fails() ) {
             $this->errors = $validator->errors()->getMessages();
-
             return false;
         }
 
         return true;
     }
-
 }
