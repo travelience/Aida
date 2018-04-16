@@ -22,10 +22,8 @@
     "illuminate/view": "~5",
     "illuminate/events": "~5",
     "monolog/monolog": "^1.23",
-    "illuminate/database": "5.1.8",
     "illuminate/pagination": "5.0.*|5.1.*"
   },
-
   "autoload": {
     "psr-4": {
       "Travelience\\Aida\\": "src/"
