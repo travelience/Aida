@@ -2,6 +2,7 @@
 
 namespace Travelience\Aida\Core;
 
+use Travelience\Aida\Database\Database;
 use Travelience\Aida\Mail\Mail;
 use Travelience\Aida\Router\Router;
 use Travelience\Aida\Router\DynamicRouter;
