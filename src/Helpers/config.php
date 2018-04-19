@@ -14,8 +14,8 @@ if (! function_exists('config')) {
     }
 }
 
-if (! function_exists('env')) {
-    function env($key, $default=false)
+if (! function_exists('_env')) {
+    function _env($key, $default=false)
     {
         if (isset($GLOBALS['ENV'][$key])) {
             return $GLOBALS['ENV'][$key];
