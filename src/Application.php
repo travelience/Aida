@@ -25,7 +25,6 @@ class Application extends Singleton
         define('LOCALES_PATH', CONFIG_PATH.'/locales');
         define('PAGES_FOLDER', 'pages');
 
-        $this->withHelpers();
         $this->withConfig();
         $this->runEvents('config');
     }

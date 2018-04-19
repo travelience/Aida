@@ -61,11 +61,6 @@ trait Plugins {
 
     }
 
-    public function withHelpers()
-    {
-        require  FRAMEWORK_PATH . '/src/Helpers.php';
-    }
-
     public function withConfig()
     {
         $this->on('config', new Env() );
