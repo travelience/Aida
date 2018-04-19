@@ -21,7 +21,8 @@
     "illuminate/view": "~5",
     "illuminate/events": "~5",
     "monolog/monolog": "^1.23",
-    "illuminate/pagination": "~5"
+    "illuminate/pagination": "~5",
+    "illuminate/database": "^5.7@dev"
   },
   "autoload": {
     "psr-4": {
