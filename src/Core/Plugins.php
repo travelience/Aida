@@ -2,7 +2,6 @@
 
 namespace Travelience\Aida\Core;
 
-use Travelience\Aida\Database\Database;
 use Travelience\Aida\Mail\Mail;
 use Travelience\Aida\Router\Router;
 use Travelience\Aida\Router\DynamicRouter;
@@ -36,7 +35,7 @@ trait Plugins {
         $this->withDynamicRoutes();
 
         // request
-        $this->withREquest();
+        $this->withRequest();
 
         // response
         $this->withResponse();
@@ -75,11 +74,6 @@ trait Plugins {
     public function withIncludes()
     {
         $this->on('init', new Includes($this));
-    }
-
-    public function withDatabase()
-    {
-        $this->set('db', Database::init());
     }
 
     public function withMail()
