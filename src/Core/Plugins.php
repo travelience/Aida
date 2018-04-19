@@ -23,7 +23,7 @@ trait Plugins {
 
 
     public function withEssentials()
-    {        
+    {
         // setup
         $this->withFolders();
 
@@ -74,6 +74,11 @@ trait Plugins {
     public function withIncludes()
     {
         $this->on('init', new Includes($this));
+    }
+
+    public function withDatabase()
+    {
+        $this->set('db', Database::init());
     }
 
     public function withMail()
