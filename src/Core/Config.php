@@ -4,7 +4,7 @@ namespace Travelience\Aida\Core;
 
 class Config
 {
-    public $config = ['app', 'mail', 'seo' ,'services', 'database', 'helpers'];
+    public $config = ['app', 'mail', 'seo' ,'services', 'database'];
 
     public function handle($req, $res)
     {
