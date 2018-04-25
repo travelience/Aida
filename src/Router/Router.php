@@ -15,6 +15,8 @@ class Router extends Singleton
             $path = '/' . $path;
         }
 
+        $priority = count(explode('/', $path));
+        
         $this->routes[ $name ] = [
             'name' => $name,
             'path' => $path,
@@ -23,7 +25,7 @@ class Router extends Singleton
             'page' => PAGES_FOLDER . '/' . ($config['page'] ?? $name),
             'callback' => $config['callback'] ?? null,
             'middlewares' => $config['middlewares'] ?? null,
-            'priority' => count(explode(':', $path)) + ($config['method'] == 'POST' ? 100 : 0)
+            'priority' => count(explode(':', $path)) + $priority + ($config['method'] == 'POST' ? 100 : 0)
         ];
 
         $GLOBALS['routes'] = $this->routes;
@@ -142,15 +144,17 @@ class Router extends Singleton
         $original_path = $path;
 
         // sort by priority
-        $routes = array_values(array_sort($this->routes, function ($value) {
-            return $value['priority'];
-        }));
+
+        $routes = $this->routes;
+        usort($routes, function ($a, $b) {
+            return $b['priority'] <=> $a['priority'];
+        });
 
         foreach ($routes as $route) {
             if ($route['method'] != $this->getMethod() && $route['method'] != 'ANY') {
                 continue;
             }
-
+            
             preg_match($route['config']['pattern'], $path, $matches);
 
             if ($matches) {
@@ -212,7 +216,9 @@ class Router extends Singleton
         foreach ($GLOBALS['routes'] as $route) {
             $routes[] = [
              'name' => $route['name'],
-             'path' =>   $route['path']
+             'path' =>   $route['path'],
+            //  'priority' => $route['priority'],
+            //  'config' => $route['config'],
             ];
         }
 
