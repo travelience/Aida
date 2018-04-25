@@ -1,18 +1,17 @@
 <?php
 
 namespace Travelience\Aida\Router;
+
 use Travelience\Aida\Core\Singleton;
 
-class Router extends Singleton {
-
+class Router extends Singleton
+{
     private $routes = [];
     private $middlewares = [];
 
-    public function register( $name, $path, $config=[] )
+    public function register($name, $path, $config=[])
     {
-
-        if( substr($path, 0, 1) != '/' )
-        {
+        if (substr($path, 0, 1) != '/') {
             $path = '/' . $path;
         }
 
@@ -21,43 +20,38 @@ class Router extends Singleton {
             'path' => $path,
             'method' => $config['method'],
             'config' => $this->parsePath($path),
-            'page' => PAGES_FOLDER . '/' . ( $config['page'] ?? $name ),
+            'page' => PAGES_FOLDER . '/' . ($config['page'] ?? $name),
             'callback' => $config['callback'] ?? null,
             'middlewares' => $config['middlewares'] ?? null,
-            'priority' => count( explode(':', $path) ) + ( $config['method'] == 'POST' ? 100 : 0 )
+            'priority' => count(explode(':', $path)) + ($config['method'] == 'POST' ? 100 : 0)
         ];
 
         $GLOBALS['routes'] = $this->routes;
-
     }
 
-    public function middleware( $name, $callback )
+    public function middleware($name, $callback)
     {
         $this->middlewares[ $name ] = $callback;
     }
 
-    public function runMiddlewares( $middlewares, $app )
+    public function runMiddlewares($middlewares, $app)
     {
-        foreach( $middlewares as $key )
-        {
-            if( $this->middlewares[ $key ] )
-            {
-                $this->middlewares[ $key ]( $app->req, $app->res );
+        foreach ($middlewares as $key) {
+            if ($this->middlewares[ $key ]) {
+                $this->middlewares[ $key ]($app->req, $app->res);
             }
         }
     }
 
-    public function parsePath( $path )
+    public function parsePath($path)
     {
         $segments = explode('/', $path);
         $params = [];
 
-        foreach( $segments as $item )
-        {
-            if( substr($item,0, 1) == ':' )
-            {
-               $params[] = substr($item, 1);
-               $path = str_replace($item, '(.*)', $path);
+        foreach ($segments as $item) {
+            if (substr($item, 0, 1) == ':') {
+                $params[] = substr($item, 1);
+                $path = str_replace($item, '(.*)', $path);
             }
         }
 
@@ -65,14 +59,11 @@ class Router extends Singleton {
             'pattern' => "/^".str_replace('/', '\/', $path)."$/",
             'params' => $params
         ];
-
     }
 
-    public function getSegments( $path=false )
+    public function getSegments($path=false)
     {
-
-        if( !$path )
-        {
+        if (!$path) {
             $path = $this->getRequestUri();
         }
 
@@ -82,19 +73,16 @@ class Router extends Singleton {
         return $path;
     }
 
-    public function getParams( $route, $matches )
+    public function getParams($route, $matches)
     {
-  
-        if( !isset($route['config']['params']) )
-        {
+        if (!isset($route['config']['params'])) {
             return [];
         }
   
         $params = [];
   
-        foreach( $route['config']['params'] as $index=>$key )
-        {
-          $params[$key] = $matches[ $index+1 ];
+        foreach ($route['config']['params'] as $index=>$key) {
+            $params[$key] = $matches[ $index+1 ];
         }
   
         return $params;
@@ -116,10 +104,9 @@ class Router extends Singleton {
     public function getForcedRoute()
     {
         $path = $this->getRequestUri();
-        $name = substr($path,1);
+        $name = substr($path, 1);
 
-        if( $name == '' )
-        {
+        if ($name == '') {
             $name = 'index';
         }
 
@@ -128,7 +115,7 @@ class Router extends Singleton {
             'page' => $name,
             'path' => $path,
             'params' => [],
-            'segments' => $this->getSegments( $path ),
+            'segments' => $this->getSegments($path),
             'callback' => false
         ];
     }
@@ -138,19 +125,17 @@ class Router extends Singleton {
         return $_SERVER['REQUEST_METHOD'];
     }
 
-    public function match( $path=false )
+    public function match($path=false)
     {
-
-        if( !$path ){ 
-            $path = $this->getRequestUri(); 
+        if (!$path) {
+            $path = $this->getRequestUri();
         }
 
         if (config('app.locales')) {
             $path = str_replace('/'. session('lang'), '', $path);
         }
 
-        if( $path == '' )
-        {
+        if ($path == '') {
             $path = '/';
         }
 
@@ -162,54 +147,46 @@ class Router extends Singleton {
         }));
 
         foreach ($routes as $route) {
-
-            if( $route['method'] != $this->getMethod() && $route['method'] != 'ANY' )
-            {
+            if ($route['method'] != $this->getMethod() && $route['method'] != 'ANY') {
                 continue;
             }
 
-            preg_match( $route['config']['pattern'], $path, $matches);
+            preg_match($route['config']['pattern'], $path, $matches);
 
             if ($matches) {
-
                 unset($matches[0]);
                 $route['matches'] = $matches;
-                $route['params'] = $this->getParams( $route, $matches );
-                $route['segments'] = $this->getSegments( $original_path );
+                $route['params'] = $this->getParams($route, $matches);
+                $route['segments'] = $this->getSegments($original_path);
                 return $route;
             }
         }
 
         return $this->getForcedRoute();
-
     }
 
 
-    public function get( $name, $params=[] )
+    public function get($name, $params=[])
     {
         $base = '/';
 
-        if( config('app.locales') )
-        {
+        if (config('app.locales')) {
             $base .= session('lang').'/';
         }
 
-        if( !isset($GLOBALS['routes'][$name]) )
-        {
+        if (!isset($GLOBALS['routes'][$name])) {
             return $base . str_replace('.', '/', $name);
         }
 
         $route = $GLOBALS['routes'][$name];
         $query = '';
         
-        if( $params )
-        {
-            $route_params = str_get_params( $route['path'], $params );
+        if ($params) {
+            $route_params = str_get_params($route['path'], $params);
 
             $get_params = array_except($params, array_keys($route_params));
     
-            if( count($get_params) > 0 )
-            {
+            if (count($get_params) > 0) {
                 $query = '?'.http_build_query($get_params);
             }
         }
@@ -217,12 +194,28 @@ class Router extends Singleton {
         $path = $base . str_params($route['path'], $params) . $query;
         $path = str_replace('//', '/', $path);
 
-        if( $path != '/' && substr($path, -1) == '/' )
-        {
+        if ($path != '/' && substr($path, -1) == '/') {
             $path =  substr($path, 0, -1);
         }
        
         return $path;
     }
 
+    public function getPaths()
+    {
+        if (!isset($GLOBALS['routes'])) {
+            return [];
+        }
+
+        $routes = [];
+
+        foreach ($GLOBALS['routes'] as $route) {
+            $routes[] = [
+             'name' => $route['name'],
+             'path' =>   $route['path']
+            ];
+        }
+
+        return $routes;
+    }
 }
