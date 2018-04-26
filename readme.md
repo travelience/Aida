@@ -532,10 +532,32 @@ $query = "query posts($limit: Int!) {
 $posts = $res->graphql->response($query, $variables=['limit' => 5]);
 ```
 
-2) Create a file in **config/graphql/GetPosts.gql** with the query and then pass like this:
+2) Create a file in **config/graphql/GetPosts.gql** with the query and then pass the path:
 ```php
 $posts = $res->graphql->response('GetPosts', $variables=['limit' => 5]);
 ```
+
+for Validation, you can merge the GraphQL errors with the $req. 
+```php
+$r = $res->graphql->response('Login', ['email' => '..', 'password' => '...']);
+
+if( $r->hasErrors() )
+{
+    $req->setErrors( $r->errors() );
+     
+    if( $r->hasError('default') )
+    {
+        $res->alert( $r->getError('default'), 'danger' );
+    }
+
+}
+
+ @if( $error = $req->getError('email') ) 
+    <div class="invalid-feedback"> {{ $error }} </div> 
+ @endif
+
+```
+
 
 # Database
 If you need to get information from a database or perform inserts, updates, by default it's disabled, but you can activate like:
