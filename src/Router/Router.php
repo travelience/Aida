@@ -154,7 +154,7 @@ class Router extends Singleton
             if ($route['method'] != $this->getMethod() && $route['method'] != 'ANY') {
                 continue;
             }
-            
+
             preg_match($route['config']['pattern'], $path, $matches);
 
             if ($matches) {
@@ -186,7 +186,14 @@ class Router extends Singleton
         $query = '';
         
         if ($params) {
+            if (!is_array($params)) {
+                $value = $params;
+                $params = [];
+                $params[ $route['config']['params'][0] ] = $value;
+            }
+
             $route_params = str_get_params($route['path'], $params);
+
 
             $get_params = array_except($params, array_keys($route_params));
     
@@ -204,7 +211,7 @@ class Router extends Singleton
        
         return $path;
     }
-
+    
     public function getPaths()
     {
         if (!isset($GLOBALS['routes'])) {
