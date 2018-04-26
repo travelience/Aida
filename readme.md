@@ -444,6 +444,8 @@ This is the list of functions helpers:
 - cache($key, $callback=false, $duration=60)
 - array_to_table($data, $class='', $style='')
 - array_to_ul( $array, $class='', $style='' )
+- pp($var)  // print with pre tags
+- pdd($var) // print and die
 
 ### Config
 - config($path, $default=false)
@@ -469,6 +471,14 @@ This is the list of functions helpers:
 - current_route()
 - localization_url($locale, $url=false)
 - route($name, $params=[])
+
+```php
+// multiple keys
+route('settings.tags._id.delete', ['id' => 12]);
+
+// only for one key
+route('settings.tags._id.delete', 12); 
+```
 
 # Api
 If you want to make calls to a REST api, you have to add in the context the api.
