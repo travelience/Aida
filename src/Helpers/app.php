@@ -35,7 +35,6 @@ if (! function_exists('cookie')) {
 if (! function_exists('session')) {
     function session($key, $value=false)
     {
-       
         $session = new \Travelience\Aida\Session\Session();
 
         if (!$value) {
@@ -87,26 +86,23 @@ if (! function_exists('array_remove_null')) {
 }
 
 if (! function_exists('graphql')) {
-
     function graphql($host, $headers=[])
     {
-       return new Travelience\Aida\GraphQL\GraphQL($host, $headers);
+        return new Travelience\Aida\GraphQL\GraphQL($host, $headers);
     }
 }
 
 if (! function_exists('facebook')) {
-
-    function facebook( $config=false )
+    function facebook($config=false)
     {
-       return new Travelience\Aida\Facebook\Facebook( $config );
+        return new Travelience\Aida\Facebook\Facebook($config);
     }
 }
 
 if (! function_exists('api')) {
-
     function api($host)
     {
-       return new Travelience\Aida\Api\Api($host);
+        return new Travelience\Aida\Api\Api($host);
     }
 }
 
@@ -122,9 +118,7 @@ if (! function_exists('redirect')) {
 if (! function_exists('trans')) {
     function trans($key, $params=[], $default=false)
     {
-
-        if( !isset($GLOBALS['trans']) )
-        {
+        if (!isset($GLOBALS['trans'])) {
             return (!$default ? $key : $default);
         }
 
@@ -148,10 +142,8 @@ if (! function_exists('__')) {
 if (! function_exists('cache')) {
     function cache($key, $callback=false, $duration=60)
     {
-       
         $cache = new \Travelience\Aida\Cache\Cache();
-        return $cache->get( $key, $callback, $duration );
-        
+        return $cache->get($key, $callback, $duration);
     }
 }
 
@@ -169,10 +161,8 @@ if (! function_exists('array_to_table')) {
     {
         $html = "<table class='table {$class}' style='font-family:Arial; font-size:14px;' cellpadding='10'>";
 
-        if( $data )
-        {
-            foreach($data as $key=>$value)
-            {
+        if ($data) {
+            foreach ($data as $key=>$value) {
                 $html .= "<tr >";
 
                 $html .= "<td width='140' style='{$style}'><b>" . ucfirst($key) . "</b></td>";
@@ -186,7 +176,23 @@ if (! function_exists('array_to_table')) {
 
         return $html;
     }
+}
 
+if (! function_exists('pp')) {
+    function pp($var)
+    {
+        echo '<pre>';
+        print_r($var);
+        echo '</pre>';
+    }
+}
+
+if (! function_exists('pdd')) {
+    function pdd($var)
+    {
+        echo "<pre>";
+        dd($var);
+    }
 }
 
 if (! function_exists('array_to_ul')) {
@@ -199,29 +205,24 @@ if (! function_exists('array_to_ul')) {
     * @param String $class
     * @return String
     */
-    function array_to_ul( $array, $class='', $style='' )
+    function array_to_ul($array, $class='', $style='')
     {
-        if( !is_array($array) ){ return false; }
+        if (!is_array($array)) {
+            return false;
+        }
         
         $html = "<ul class='{$class}' style='{$style}'>";
 
-        foreach( $array as $key=>$value )
-        {
-            if( is_numeric($key) )
-            {
+        foreach ($array as $key=>$value) {
+            if (is_numeric($key)) {
                 $html .= "<li>{$value}</li>";
-            }
-            else
-            {
+            } else {
                 $html .= "<li><b>{$key}:</b> {$value}</li>";
             }
-            
         }
 
         $html .= "</ul>";
 
         return $html;
-        
     }
-
 }
