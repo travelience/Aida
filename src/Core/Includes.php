@@ -15,14 +15,18 @@ class Includes
     public function handle($req, $res)
     {
         $app = $this->app;
-
         
         // includes
         foreach ($this->includes as $file) {
-            $path = CONFIG_PATH . '/'. $file . '.php';
+            $path = CONFIG_PATH . '/'. $file;
+            $fileName = $path . '.php';
 
-            if (file_exists($path)) {
-                require $path;
+            if(is_dir($path)) {
+              require_all($path);
+            }
+
+            if (file_exists($fileName)) {
+                require $fileName;
             }
         }
     }

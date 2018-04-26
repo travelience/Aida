@@ -226,3 +226,19 @@ if (! function_exists('array_to_ul')) {
         return $html;
     }
 }
+
+
+if(! function_exists('require_all')) {
+    function require_all($path) {
+      foreach(new \DirectoryIterator($path) as $fileInfo) {
+        if($fileInfo->isDot()) continue;
+        if($fileInfo->isFile()) {
+          require_once($fileInfo->getPathname());
+        }
+  
+        if($fileInfo->isDir()) {
+          require_all($fileInfo->getPathname());
+        }
+      }
+    }
+  }
