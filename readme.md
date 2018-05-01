@@ -2,7 +2,7 @@
 - [Getting Started](#getting-started)
 
 ## Application
-  - [Constants](#constans)
+  - [Constants](#constants)
   - [Application](#application)
 
 ## The Basics
@@ -34,7 +34,7 @@
 
 
 # Installation
-In your composer.json file include a direct link to this repository:
+Include a direct link to this repository in your composer.json file:
 ```
 "repositories": [
     {
@@ -48,7 +48,7 @@ In your composer.json file include a direct link to this repository:
 ```
 
 # Getting Started
-Create hte folder **/public** and inside a **index.php** file with the following code inside:
+Create a folder caleld **/public** and create an **index.php** file inside, with the following code:
 
 ```php
 <?php
@@ -63,8 +63,8 @@ for a base project visit this repository:
 https://github.com/travelience/Aida-base
 
 
-# Constans
-There are few constans you can use inside Aida framework
+# Constants
+There are few constants you can use inside Aida framework
 
 ```
 - FRAMEWORK_PATH
@@ -81,8 +81,8 @@ If you plan to extend the Framework you can use the following api:
 
 ```php
 
-$app->set('api', new Api()); // set variable to context
-$app->use( $callback($req, $res) );
+$app->set('api', new Api()); // the first argument is the property on the app context to use, the second argument is what the key will return
+$app->use($callback($req, $res)); // this is called as a middleware
 $app->use(new Middleware()); // with the method handle($req, $res)
 
 // $event: init, before , after, error
@@ -97,7 +97,7 @@ $app->any( $path, $config, $callback($req, $res) );
 ```
 
 # Config
-Aida framework have few config files and there are two ways to set their values.
+The Aida framework has a few config files and there are two ways to set their values.
 
 1) create files in your **/config** folder
     - app.php
@@ -126,15 +126,15 @@ return [
 // database.php
 
 return [
-    'driver' => env('DB_DRIVER', 'mysql'), 
-    'host' => env('DB_HOST', 'host'),
-    'port' => env('DB_PORT', 3306),
-    'database' => env('DB_DATABASE'),
-    'username' => env('DB_USERNAME'),
-    'password' => env('DB_PASSWORD'),
-    'charset' => env('DB_CHARSET', 'utf8'),
-    'collation' => env('DB_COLLOCATION', 'utf8_unicode_ci'),
-    'prefix' => env('DB_PREFIX', '')
+    'driver' => _env('DB_DRIVER', 'mysql'), 
+    'host' => _env('DB_HOST', 'host'),
+    'port' => _env('DB_PORT', 3306),
+    'database' => _env('DB_DATABASE'),
+    'username' => _env('DB_USERNAME'),
+    'password' => _env('DB_PASSWORD'),
+    'charset' => _env('DB_CHARSET', 'utf8'),
+    'collation' => _env('DB_COLLOCATION', 'utf8_unicode_ci'),
+    'prefix' => _env('DB_PREFIX', '')
 ];
 ```
 
@@ -142,12 +142,12 @@ return [
 // mail.php
 
 return [
-    'host' => env('MAIL_HOST'),
-    'port' => env('MAIL_PORT'),
-    'username' => env('MAIL_USERNAME'),
-    'password' => env('MAIL_PASSWORD'),
-    'from' => env('MAIL_FROM_NAME'),
-    'from_email' => env('MAIL_FROM'),
+    'host' => _env('MAIL_HOST'),
+    'port' => _env('MAIL_PORT'),
+    'username' => _env('MAIL_USERNAME'),
+    'password' => _env('MAIL_PASSWORD'),
+    'from' => _env('MAIL_FROM_NAME'),
+    'from_email' => _env('MAIL_FROM'),
 ];
 ```
 
@@ -225,7 +225,7 @@ $app->on('error', function($req, $res){
 ```
 
 # Views
-The template engine that Aida framework use is Blade, for more information please check this documentation: https://laravel.com/docs/5.6/blade
+Aida uses Blade as its templating engine, for more information please check the blade documentation: https://laravel.com/docs/5.6/blade
 
 you can set the views from your routes like this:
 ```php
@@ -237,7 +237,7 @@ $app->get('/contact', ['name' => 'contact'] , function($req, $res){
 ```
 
 # Layouts
-The recommended way to create layouts with blade is creating the files inside the folder **/views/layouts/default.blade.php** and put here the content of the layout, example:
+The recommended way to create layouts with blade is creating the files inside the folder **/views/layouts/default.blade.php** and put there the content of the layout, example:
 
 ```php
 
@@ -296,7 +296,7 @@ return [
 and then all the routes will be prepended by the current locale of the user browser by default.
 
 # Auth
-To manage authentication you have few methods:
+To manage authentication you have a few methods:
 
 ```php
 
@@ -310,7 +310,7 @@ $res->auth->user()->first_name
 the **authenticate($data)** method store the information of the authenticated user and save in a cookie.
 
 # Cache
-The cache in Aida Framework is by file. example:
+The cache is file based. example:
 
 ```php
 
@@ -323,8 +323,8 @@ $posts = cache('posts', function($req, $res){
 ```
 
 # Logs
-Aida Framework use monolog.
-Default error logs are saved by default in the *errors.log* file, if you want to set your own logs, use the **$res->log** param in the response.
+Monolog is the logging package used.
+Error logs are saved by default in the *errors.log* file, if you want to set your own logs, use the **$res->log** param in the response.
 
 example:
 ```php
@@ -346,7 +346,7 @@ $req->getCurrentRoute();
 ```
 
 # Validation
-the **$req** also have access to the validations methods, example:
+the **$req** also has access to the validations methods, example:
 
 ```php
 $req->validate([
@@ -388,7 +388,7 @@ cookie($key, $value, $duration);
 ```
 
 # Translations
-To use translations in Aida Framework, you have to create the translations files inside: **config/locales/en.php** example:
+To use translations, you have to create the translations files inside: **config/locales/en.php** example:
 
 ```php
 // en.php
@@ -407,7 +407,7 @@ __('hello', ['name' => 'Rodrigo']); // Hello Rodrigo
 ```
 
 # Actions
-To separate most of your code logic outside your template, Aida framework provide you a way to set dispatch and set actions. example:
+To separate most of your code logic outside your template, Aida framework provides you a way to set dispatch and set actions. example:
 ```php
 // config/actions.php
 
@@ -426,7 +426,6 @@ $posts = dispatch('GET_POSTS', ['limit' => 15]);
 ```
 
 # Helpers
-This is the list of functions helpers:
 
 ### General
 - app();
@@ -481,7 +480,7 @@ route('settings.tags._id.delete', 12);
 ```
 
 # Api
-If you want to make calls to a REST api, you have to add in the context the api.
+If you want to make calls to a REST api, you have to add the api to the context.
 
 ```php
 
@@ -500,7 +499,7 @@ $res->api->call('/posts');
 ```
 
 # GraphQL
-To use graphql, you need to add a GraphQL instance in the context.
+To use graphql, you need to add a GraphQL instance to the context.
 
 ```php
 // config/plugins.php
@@ -519,7 +518,7 @@ $graphql = graphql('http://api.demo.com/graphql', $headers);
 $app->set('graphql', $graphql);
 ```
 
-to write the queries you have two ways:
+There are two ways to write queries:
 
 1) add a variable with the query string
 ```php
@@ -560,7 +559,7 @@ if( $r->hasErrors() )
 
 
 # Database
-If you need to get information from a database or perform inserts, updates, by default it's disabled, but you can activate like:
+By default database access is disabled. If you need to get information from a database or perform inserts and updates etc, you can activate it with:
 
 ```php
 $app->withDatabase();
@@ -577,7 +576,7 @@ $res->db->table('posts')->insert([
 ```
 
 # Facebook
-Adding a Facebook login in your website is super simple. first you need to set your **FACEBOOK_ID** and **FACEBOOK_SECRET** in your **.env** file, and add the plugin.
+Adding a Facebook login to your website is super simple. first you need to set your **FACEBOOK_ID** and **FACEBOOK_SECRET** in your **.env** file, and add the plugin.
 
 ```php
 // config/plugins.php
@@ -602,7 +601,7 @@ $sent = $res->mail->send();
 ```
 
 # Alerts
-Aida frameowrk have already a alert system integrated. you can use the default bootstrap template including in your layour:
+The alerts are session based flash messages and are activated by default. You can use the default bootstrap template including in your layout:
 ```html
 @include('Aida::alerts')
 ```
