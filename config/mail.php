@@ -1,9 +1,9 @@
 <?php
 return [
-    'host' => env('MAIL_HOST'),
-    'port' => env('MAIL_PORT'),
-    'username' => env('MAIL_USERNAME'),
-    'password' => env('MAIL_PASSWORD'),
-    'from' => env('MAIL_FROM_NAME'),
-    'from_email' => env('MAIL_FROM'),
+    'host' => _env('MAIL_HOST'),
+    'port' => _env('MAIL_PORT'),
+    'username' => _env('MAIL_USERNAME'),
+    'password' => _env('MAIL_PASSWORD'),
+    'from' => _env('MAIL_FROM_NAME'),
+    'from_email' => _env('MAIL_FROM'),
 ];

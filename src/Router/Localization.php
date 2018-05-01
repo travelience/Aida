@@ -1,6 +1,7 @@
 <?php
 
 namespace Travelience\Aida\Router;
+
 use Travelience\Aida\Router\Router;
 
 class Localization
@@ -9,6 +10,10 @@ class Localization
     {
         $locales = config('app.locales');
         $lang = self::getFirstSegment();
+
+        if (!$locales || count($locales) == 0) {
+            return config('app.locale');
+        }
 
         if (in_array($lang, $locales)) {
             return $lang;
