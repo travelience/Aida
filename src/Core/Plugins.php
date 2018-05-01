@@ -20,12 +20,12 @@ use Travelience\Aida\Auth\Auth;
 use Travelience\Aida\Cache\Cache;
 use Travelience\Aida\Seo\Seo;
 
-trait Plugins {
-
-
+trait Plugins
+{
     public function withEssentials()
     {
         // setup
+        $this->withLogs();
         $this->withFolders();
 
         // views
@@ -45,7 +45,6 @@ trait Plugins {
         $this->withLocalization();
         $this->withTranslations();
         $this->withSeo();
-        $this->withLogs();
 
         // Auth
         $this->withAuth();
@@ -58,13 +57,12 @@ trait Plugins {
 
         // Includes
         $this->withIncludes();
-
     }
 
     public function withConfig()
     {
-        $this->on('config', new Env() );
-        $this->on('config', new Config( $this ) );
+        $this->on('config', new Env());
+        $this->on('config', new Config($this));
     }
 
     public function withIncludes()
@@ -89,17 +87,17 @@ trait Plugins {
 
     public function withDynamicRoutes()
     {
-        $this->on('init', new DynamicRouter( VIEWS_PATH . '/'. PAGES_FOLDER ) );
+        $this->on('init', new DynamicRouter(VIEWS_PATH . '/'. PAGES_FOLDER));
     }
 
     public function withFolders()
     {
-        $this->on('init', new Folders() );
+        $this->on('init', new Folders());
     }
 
     public function withViews()
     {
-        $this->on('init', new View() );
+        $this->on('init', new View());
     }
 
     public function withRequest()
@@ -130,7 +128,7 @@ trait Plugins {
 
     public function withAuth()
     {
-        $this->set('auth',  new Auth());
+        $this->set('auth', new Auth());
     }
 
     public function withCache()
@@ -143,12 +141,12 @@ trait Plugins {
         $this->set('seo', new Seo());
     }
 
-    public function withFacebook( $config=false, $key='facebook' )
+    public function withFacebook($config=false, $key='facebook')
     {
         $this->set($key, facebook($config));
     }
 
-    public function withGraphQL( $host, $headers=[], $key='graphql' )
+    public function withGraphQL($host, $headers=[], $key='graphql')
     {
         $this->set($key, graphql($host, $headers));
     }
