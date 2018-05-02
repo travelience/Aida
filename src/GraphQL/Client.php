@@ -60,25 +60,23 @@ class Client
     public function raw($query, $variables = [], $headers = [], $files = null)
     {
         if ($files) {
-            $data = $this->formatMultiPartRequest($query, $variables, $files);
-            try {
-                $request = $this->guzzle->request('POST', $this->url, [
-                'multipart' => $data
-              ]);
-                return $request;
-            } catch (\Exception $e) {
-            }
+            $data = [
+                'multipart' => $this->formatMultiPartRequest($query, $variables, $files)
+            ];
+        } else {
+            $data = [
+                'json' => [
+                    'query' => $query,
+                    'variables' => $variables,
+                ],
+                'headers' => $headers
+            ];
         }
-
-        $request =  $this->guzzle->request('POST', $this->url, [
-            'json' => [
-                'query' => $query,
-                'variables' => $variables,
-            ],
-            'headers' => $headers
-        ]);
-
-        return $request;
+    
+        try {
+            return $this->guzzle->request('POST', $this->url, $data);
+        } catch (\Exception $e) {
+        }
     }
 
     /**
@@ -94,10 +92,12 @@ class Client
      * @throws GraphQLInvalidResponse
      * @throws GraphQLMissingData
      */
-    public function json($query, $variables = [], $files = [], $headers = [], $assoc = false)
+    public function json($query, $variables = [], $files = null, $headers = [], $assoc = false)
     {
         $response = $this->raw($query, $variables, $headers, $files);
+
         $responseJson = json_decode($response->getBody()->getContents(), $assoc);
+
         if ($responseJson === null) {
             throw new GraphQLInvalidResponse('GraphQL did not provide a valid JSON response. Please make sure you are pointing at the correct URL.');
         } elseif (!isset($responseJson->data) && isset($responseJson->errors)) {
@@ -121,39 +121,40 @@ class Client
      *
      * @throws \Exception
      */
-    public function response($query, $variables = [], $files, $headers = [])
+    public function response($query, $variables = [], $files = null, $headers = [])
     {
         $response = $this->json($query, $variables, $files, $headers);
         return new Response($response);
     }
 
-    private function formatMultiPartRequest($query, &$variables, $files)
+    private function formatMultiPartRequest($query, &$variables, $files=[])
     {
         $stream = [];
         $map = [];
-        foreach ($files as $name => $file) {
-            $variables[$name] = null;
+       
+        foreach ($files as $key => $file) {
+            $variables[$key] = null;
             $stream[] = [
-              'name' => $name,
-              'filename' => $file['file']->getClientOriginalName(),
-              'Mime-Type' => $file['file']->getmimeType(),
-              'contents' => fopen($file['file']->getPathname(), 'r')
+              'name' => $key,
+              'filename' => $file->getClientOriginalName(),
+              'Mime-Type' => $file->getmimeType(),
+              'contents' => fopen($file->getPathname(), 'r')
             ];
-            $map[] = ['variables.' . $name];
         }
 
-        $data = [[
-          'name' => 'map',
-          'contents' => json_encode($map)
-        ],
-        [
-          'name' => 'operations',
-          'contents' => json_encode([
-            'query' => $query,
-            'variables' => $variables
-          ])
-        ]];
+        $data[] = [
+            'name' => 'files',
+            'contents' => json_encode(array_keys($files))
+        ];
 
+        $data[] = [
+            'name' => 'operations',
+            'contents' => json_encode([
+              'query' => $query,
+              'variables' => $variables
+            ])
+        ];
+        
         return array_merge($data, $stream);
     }
 }
