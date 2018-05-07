@@ -73,13 +73,16 @@ class Application extends Singleton
 
     public function render($callback=false)
     {
+
+        $this->runEvents('before');
+        
         $route = $this->req->getCurrentRoute();
+
 
         if (isset($route['middlewares'])) {
             $this->router->runMiddlewares($route['middlewares'], $this);
         }
 
-        $this->runEvents('before');
 
         if (is_callable($route['callback'])) {
             return $route['callback']($this->req, $this->res);
