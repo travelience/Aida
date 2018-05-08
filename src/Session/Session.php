@@ -8,6 +8,7 @@ class Session {
     {
         $_SESSION = null;
         unset( $_SESSION );
+        session_destroy();
     }
 
     public static function forget( $key )
@@ -18,17 +19,13 @@ class Session {
 
     public static function get( $key, $default=false )
     {
-        if( isset($_SESSION[$key]) )
-        {
-            return $_SESSION[$key];
-        }
-
-        return $default;
+        return array_get($_SESSION, $key, $default);
     }
 
     public static function has( $key )
     {
-        if( isset($_SESSION[$key]) )
+
+        if( array_get($_SESSION, $key) )
         {
             return true;
         }
@@ -38,11 +35,13 @@ class Session {
 
     public static function put( $key, $value )
     {
-        return $_SESSION[$key] = $value;
+        array_set($_SESSION, $key, $value);
+        return $value;
     }
 
     public static function set( $key, $value )
     {
-        return $_SESSION[$key] = $value;
+        array_set($_SESSION, $key, $value);
+        return $value;
     }
 }

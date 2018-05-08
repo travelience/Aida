@@ -139,6 +139,9 @@ trait Plugins
     public function withSeo()
     {
         $this->set('seo', new Seo());
+        $this->on('after', function($req, $res){
+            $res->seo->forget();
+        });
     }
 
     public function withFacebook($config=false, $key='facebook')

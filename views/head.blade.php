@@ -1,6 +1,6 @@
 <?php
 
-    $title          = $res->seo->get('title', title_case( current_route() ) );
+    $title          = $res->seo->get('title', $res->seo->getTitle() );
     $description    = $res->seo->get('description', config('seo.description'));
     $picture        = $res->seo->get('picture', config('seo.picture'));
     $keywords       = $res->seo->get('keywords',config('seo.keywords'));

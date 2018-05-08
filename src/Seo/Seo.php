@@ -10,7 +10,31 @@ class Seo
     
     public function getKey($key)
     {
-        return $this->key . '_' . $key;
+        return $this->key . '.' . $key;
+    }
+
+    public function getTitle()
+    {
+        $text = current_route();
+        $text = explode('.', $text);
+        $title = [];
+        $prev = false;
+
+        foreach( $text as $item )
+        {
+            
+            if( substr($item,0,1) == '_' )
+            {
+                continue;    
+            }
+
+            $item = title_case($item);
+
+            $title[] = $item;
+            $prev = $item;
+        }
+        $title = implode(' › ', $title);
+        return $title;
     }
 
     public function set($key, $value)
@@ -22,6 +46,12 @@ class Seo
     {
         return Session::get( $this->getKey($key), $value);
     }
+
+    public function forget()
+    {
+        Session::forget( $this->key );
+    }
+    
 
     public function metas()
     {

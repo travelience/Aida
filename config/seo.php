@@ -2,9 +2,9 @@
 
 return [
 
-    'name' => 'Aida',
-    'description' => 'Aida App description',
-    'picture' => false,
-    'keywords' => '1,2,3,4',
+    'name' => _env('APP_NAME', 'Aida'),
+    'description' => _env('APP_DESCRIPTION', 'Aida App description'),
+    'picture' => _env('APP_PICTURE', false),
+    'keywords' => _env('APP_KEYWORDS', false),
 
 ];
