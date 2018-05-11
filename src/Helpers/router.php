@@ -4,7 +4,7 @@ if (! function_exists('is_page')) {
     function is_page($page)
     {
         $page = explode('?', $page);
-        if (current_url_path() == $page[0]) {
+        if (current_url_path() == strtolower($page[0])) {
             return true;
         }
 
@@ -16,7 +16,7 @@ if (! function_exists('is_page_path')) {
     function is_page_path($page)
     {
         $page = explode('?', $page);
-        if (str_contains(current_url_path(), $page[0])) {
+        if (str_contains(current_url_path(), strtolower($page[0]))) {
             return true;
         }
 
@@ -81,7 +81,7 @@ if (! function_exists('is_route')) {
     */
     function is_route( $name )
     {
-        if( current_route() == $name)
+        if( current_route() == strtolower($name))
         {
             return true;
         }
@@ -102,7 +102,7 @@ if (! function_exists('is_route_path')) {
     */
     function is_route_path( $name )
     {
-        if(preg_match('/('. $name .')/i' , current_route() , $m) === 1)
+        if(preg_match('/('. strtolower($name) .')/i' , current_route() , $m) === 1)
         {
             return true;
         }

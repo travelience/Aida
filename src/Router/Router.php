@@ -18,7 +18,7 @@ class Router extends Singleton
         $priority = count(explode('/', $path));
         
         $this->routes[ $name ] = [
-            'name' => $name,
+            'name' => strtolower($name),
             'path' => $path,
             'method' => $config['method'],
             'config' => $this->parsePath($path),
@@ -172,6 +172,7 @@ class Router extends Singleton
 
     public function get($name, $params=[])
     {
+        $name = strtolower($name);
         $base = '/';
 
         if (config('app.locales')) {
