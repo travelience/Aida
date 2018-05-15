@@ -1,15 +1,46 @@
 <?php
 
 if (! function_exists('dispatch')) {
-    function dispatch( $method, $payload=[] )
+    function dispatch($method, $payload=[], $callback = null)
     {
-       $app = app();
+        $app = app();
+        try {
+            if (function_exists($method)) {
+                $response = $method($app->req, $app->res, $payload);
+                mergeErrors($response);
+                flashErrors($response->getErrorsAsString());
 
-       if( function_exists($method) )
-       {
-          return $method( $app->req, $app->res, $payload );
-       }
+                if (!$app->req->hasErrors() && is_callable($callback)) {
+                    $callback($app->req, $response);
+                    return;
+                }
 
-       return false;
+                return $response;
+            }
+        } catch (\Exception $e) {
+            $app->req->setErrors($e->getMessage());
+            flashErrors($e->getMessage());
+            return;
+        }
+
+        return false;
+    }
+}
+
+if (!function_exists('mergeErrors')) {
+    function mergeErrors($data)
+    {
+        if ($data->hasErrors()) {
+            app()->req->setErrors($data->errors());
+        }
+    }
+}
+
+if (!function_exists('flashErrors')) {
+    function flashErrors($errors)
+    {
+        if ($errors) {
+            app()->res->alert($errors, 'danger');
+        }
     }
 }
