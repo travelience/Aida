@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 namespace Travelience\Aida\Request;
 
 trait Errors
 {
     protected $errors = [];
-    
+
     public function setErrors($errors)
     {
         $this->errors = $errors;
@@ -30,6 +30,25 @@ trait Errors
         return false;
     }
 
+    public function getErrorsAsString()
+    {
+        if (!$this->hasErrors()) {
+            return false;
+        }
+
+        $errors = [];
+
+        foreach ($this->errors as $error) {
+            if (is_array($error)) {
+                $error = implode(', ', $error);
+            }
+
+            $errors[] = $error;
+        }
+
+        return implode(', ', $errors);
+    }
+
     public function errors()
     {
         return $this->errors;
@@ -44,7 +63,7 @@ trait Errors
     {
         return count($this->errors) > 0;
     }
-    
+
     public function hasError($field=false, $class=true)
     {
         $error = array_get($this->errors, $field);
@@ -55,5 +74,4 @@ trait Errors
 
         return false;
     }
-
 }
