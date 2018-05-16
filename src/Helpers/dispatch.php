@@ -30,8 +30,10 @@ if (! function_exists('dispatch')) {
 if (!function_exists('mergeErrors')) {
     function mergeErrors($data)
     {
-        if ($data->hasErrors()) {
-            app()->req->setErrors($data->errors());
+        if (method_exists($data, 'hasErrors') && method_exists($data, 'setErrors')) {
+            if ($data->hasErrors()) {
+                app()->req->setErrors($data->errors());
+            }
         }
     }
 }
