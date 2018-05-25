@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Travelience\Aida\Request;
 
@@ -7,11 +7,11 @@ use Illuminate\Translation\FileLoader;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Translation\Translator;
 
-trait Validator {
-
-    public function validate( $rules = [], $input=false )
+trait Validator
+{
+    public function validate($rules = [], $input=false)
     {
-        if( !$input ) {
+        if (!$input) {
             $input = $this->all();
         }
 
@@ -19,12 +19,12 @@ trait Validator {
         $locale = session('lang') ?? 'en';
 
         $fileLoader = new FileLoader(new Filesystem, FRAMEWORK_PATH.'/config/locales/'. $locale .'/validation.php', $locale);
-        $translator = new Illuminate\Translation\Translator($fileLoader, $locale);
-        $factory = new ValidatorFactory($translator);
+        $translator = new \Illuminate\Translation\Translator($fileLoader, $locale);
+        $factory = new Factory($translator);
 
         $validator = $factory->make($input, $rules);
 
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             $this->errors = $validator->errors()->getMessages();
             return false;
         }
