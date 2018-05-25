@@ -8,7 +8,7 @@ class Router extends Singleton
 {
     private $routes = [];
     private $middlewares = [];
-
+    
     public function register($name, $path, $config=[])
     {
         if (substr($path, 0, 1) != '/') {

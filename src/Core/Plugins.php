@@ -154,8 +154,8 @@ trait Plugins
         $this->set($key, graphql($host, $headers));
     }
 
-    public function withApi($host, $key='api')
+    public function withApi($host, $params=[], $key='api')
     {
-        $this->set($key, api($host));
+        $this->set($key, api($host, $params));
     }
 }

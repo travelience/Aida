@@ -100,9 +100,9 @@ if (! function_exists('facebook')) {
 }
 
 if (! function_exists('api')) {
-    function api($host)
+    function api($host, $params=[])
     {
-        return new Travelience\Aida\Api\Api($host);
+        return new Travelience\Aida\Api\Api($host, $params);
     }
 }
 
