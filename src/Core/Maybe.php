@@ -2,15 +2,13 @@
 
 namespace Travelience\Aida\Core;
 
-class Maybe {
-    
+class Maybe
+{
     public $_data;
 
-    public function __construct( $value )
+    public function __construct($value)
     {
-
-        if( is_object($value) && get_class( $value ) == 'Object' )
-        {
+        if (is_object($value) && get_class($value) == 'Object') {
             $this->_data = (object)$value->getData();
         }
 
@@ -22,12 +20,11 @@ class Maybe {
         return $this->_data;
     }
 
-    public function  __get($name) {
-        if(property_exists($this->_data, $name)) {
-
-            if( is_object($this->_data->$name) )
-            {
-                return new Object( $this->_data->$name );
+    public function __get($name)
+    {
+        if (property_exists($this->_data, $name)) {
+            if (is_object($this->_data->$name)) {
+                return new Maybe($this->_data->$name);
             }
 
             return $this->_data->$name;
@@ -35,22 +32,22 @@ class Maybe {
         return null;
     }
 
-    public function  __call($name, $args) {
-
-        if(method_exists($this->_data, $name)) {
-
+    public function __call($name, $args)
+    {
+        if (method_exists($this->_data, $name)) {
             return $this->_data->$name();
         }
 
         return null;
     }
 
-    public function set( $key, $value )
+    public function set($key, $value)
     {
         return $this->_data->$key = $value;
     }
 
-    public function  __set($name, $value) {
+    public function __set($name, $value)
+    {
         $this->_data->$name = $value;
     }
 }
