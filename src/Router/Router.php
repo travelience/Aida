@@ -16,6 +16,15 @@ class Router extends Singleton
         }
 
         $priority = count(explode('/', $path));
+        $priority += count(explode(':', $path));
+
+        if (!str_contains($path, ':')) {
+            $priority +=50;
+        }
+
+        if ($config['method'] == 'POST') {
+            $priority += 100;
+        }
         
         $this->routes[ $name ] = [
             'name' => strtolower($name),
@@ -25,7 +34,7 @@ class Router extends Singleton
             'page' => PAGES_FOLDER . '/' . ($config['page'] ?? $name),
             'callback' => $config['callback'] ?? null,
             'middlewares' => $config['middlewares'] ?? null,
-            'priority' => count(explode(':', $path)) + $priority + ($config['method'] == 'POST' ? 100 : 0)
+            'priority' => $priority
         ];
 
         $GLOBALS['routes'] = $this->routes;
