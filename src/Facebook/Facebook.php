@@ -17,9 +17,10 @@ class Facebook
     }
     
     $this->sdk = new \Facebook\Facebook([
-    'app_id' => $config['app_id'],
-    'app_secret' => $config['app_secret'],
-    'default_graph_version' => 'v2.2',
+      'app_id' => $config['app_id'],
+      'app_secret' => $config['app_secret'],
+      'default_graph_version' => 'v2.2',
+      'http_client_handler' => 'stream'
     ]);
 
   }
