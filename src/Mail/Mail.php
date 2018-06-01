@@ -4,9 +4,9 @@ namespace Travelience\Aida\Mail;
 
 use Travelience\Aida\Blade\Blade;
 
-class Mail 
+class Mail
 {
-    public $mailer; 
+    public $mailer;
     public $data;
     public $blade;
 
@@ -15,22 +15,20 @@ class Mail
         $path_views = VIEWS_PATH;
         $path_cache = ASSETS_PATH . '/views';
 
-        $this->blade = new Blade( $path_views, $path_cache );
+        $this->blade = new Blade($path_views, $path_cache);
     }
 
     public function init()
     {
         $config = config('mail');
 
-        if( isset( $config['from'] ) )
-        {
+        if (isset($config['from'])) {
             $this->data['from'] = [ $config['from_email'] => $config['from'] ];
         }
 
         $transport = (new \Swift_SmtpTransport($config['host'], $config['port'], 'tls'));
 
-        if( isset($config['username']) )
-        {
+        if (isset($config['username'])) {
             $transport->setUsername($config['username']);
             $transport->setPassword($config['password']);
         }
@@ -40,54 +38,56 @@ class Mail
 
     public function send()
     {
-        
         $this->init();
 
-        $message = (new \Swift_Message( $this->data['subject'] ) )
+        $message = (new \Swift_Message($this->data['subject']) )
         ->setFrom($this->data['from'])
         ->setTo($this->data['to'])
         ->setBody($this->data['body'])
-        ->setContentType("text/html");
+        ->setContentType("text/html")
+        ->setReplyTo($this->data['replyTo']);
 
         $result = $this->mailer->send($message);
 
-        if( $result )
-        {
+        if ($result) {
             return true;
         }
 
         return false;
     }
 
-    public function from( $email, $name=false )
+    public function replyTo($email, $name=false)
+    {
+        $this->data['email'] = [$email => ($name ?? '')];
+    }
+
+    public function from($email, $name=false)
     {
         $this->data['from'] = [$email => ($name ?? '')];
     }
 
-    public function to( $email, $name=false )
+    public function to($email, $name=false)
     {
         $this->data['to'] = [$email => ($name ?? '') ];
     }
 
-    public function content( $content=false, $params=false )
+    public function content($content=false, $params=false)
     {
-        if( is_array($content) )
-        {
-            $content = array_to_table( $content );
+        if (is_array($content)) {
+            $content = array_to_table($content);
         }
 
         $this->data['body'] = $content;
     }
 
-    public function template( $template, $params=[] )
+    public function template($template, $params=[])
     {
-        $view = $this->blade->view()->make( $template, $params )->render();
+        $view = $this->blade->view()->make($template, $params)->render();
         $this->data['body'] = $view;
     }
 
-    public function subject( $subject )
+    public function subject($subject)
     {
         $this->data['subject'] = $subject;
     }
-
 }
