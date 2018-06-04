@@ -1,6 +1,6 @@
 @if( $alert = hasAlert() )
 
-    <div class="alert alert-{{ $alert['type'] }} alert-dismissible fade show" role="alert">
+    <div class="alert alert-{{ $alert['type'] }} alert-dismissible fade show text-center" role="alert">
     {{ $alert['message'] }}
     <button type="button" class="close" data-dismiss="alert">
         <span>&times;</span>
