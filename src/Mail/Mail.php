@@ -58,7 +58,7 @@ class Mail
 
     public function replyTo($email, $name=false)
     {
-        $this->data['email'] = [$email => ($name ?? '')];
+        $this->data['replyTo'] = [$email => ($name ?? '')];
     }
 
     public function from($email, $name=false)
