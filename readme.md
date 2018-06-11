@@ -589,6 +589,16 @@ example use:
 <a href="{{ $res->facebook->login() }}">Facebook Login</a>
 ```
 
+```php
+<?php
+    // callback() can be execute only once per authorization
+    if( $user = $res->facebook->callback() )
+    {
+        auth($user);
+    }
+?>
+```
+
 # Mail
 First you need to set your mail configuration in the **.env** file or in the **config/mail.php**. 
 
