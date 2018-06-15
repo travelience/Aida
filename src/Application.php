@@ -73,7 +73,6 @@ class Application extends Singleton
 
     public function render($callback=false)
     {
-        
         $route = $this->req->getCurrentRoute();
 
         $this->runEvents('before');
@@ -105,7 +104,9 @@ class Application extends Singleton
 
             return $this->render();
         } catch (\Exception $e) {
-            $res->log->error($e->getMessage());
+            if (property_exists($res->log, 'error')) {
+                $res->log->error($e->getMessage());
+            }
 
             $this->runEvents('error');
         }
