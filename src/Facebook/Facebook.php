@@ -6,10 +6,11 @@ class Facebook
 {
 
   public $sdk;
+  public $config;
 
   public function __construct( $config=false )
   {
-    $config = config('services.facebook', $config);
+    $this->config = config('services.facebook', $config);
     
     if( !$config )
     {
@@ -17,18 +18,20 @@ class Facebook
     }
     
     $this->sdk = new \Facebook\Facebook([
-      'app_id' => $config['app_id'],
-      'app_secret' => $config['app_secret'],
+      'app_id' => $this->config['app_id'],
+      'app_secret' => $this->config['app_secret'],
       'default_graph_version' => 'v2.2',
       'http_client_handler' => 'stream'
     ]);
 
   }
 
-  public function login( $permissions = ['email'] )
+  public function login( $permissions = ['email'], $redirect=false )
   {
       $helper = $this->sdk->getRedirectLoginHelper();
-      $loginUrl = $helper->getLoginUrl( current_url(), $permissions);
+      $redirect = ( $redirect ?? $this->config['redirect'] );
+      $redirect = ( $redirect ?? current_domain() );
+      $loginUrl = $helper->getLoginUrl( $redirect, $permissions);
 
       return $loginUrl;
   }
