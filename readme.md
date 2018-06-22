@@ -576,7 +576,7 @@ $res->db->table('posts')->insert([
 ```
 
 # Facebook
-Adding a Facebook login to your website is super simple. first you need to set your **FACEBOOK_ID** and **FACEBOOK_SECRET** in your **.env** file, and add the plugin.
+Adding a Facebook login to your website is super simple. first you need to set your **FACEBOOK_ID**, **FACEBOOK_SECRET** and **FACEBOOK_REDIRECT** in your **.env** file, and add the plugin.
 
 ```php
 // config/plugins.php
@@ -587,7 +587,9 @@ $app->withFacebook();
 example use:
 ```html
 <a href="{{ $res->facebook->login() }}">Facebook Login</a>
-```
+``` 
+the method **login()** allow to pass this parameters: `login($permissions = ['email'], $redirect=false)` 
+
 
 ```php
 <?php
