@@ -12,7 +12,7 @@ class Facebook
   {
     $this->config = config('services.facebook', $config);
     
-    if( !$config )
+    if( !$this->config )
     {
       return false;
     }
