@@ -11,6 +11,11 @@ trait Errors
         $this->errors = $errors;
     }
 
+    public function setError($error)
+    {
+        $this->errors = array_merge($this->errors, $error);
+    }
+
     public function getError($field)
     {
         if (!$this->hasErrors()) {
