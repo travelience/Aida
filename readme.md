@@ -445,6 +445,8 @@ $posts = dispatch('GET_POSTS', ['limit' => 15]);
 - array_to_ul( $array, $class='', $style='' )
 - pp($var)  // print with pre tags
 - pdd($var) // print and die
+- now() // Carbon::now() instance
+- carbon($date) // Carbon::parse($date) instance
 
 ### Config
 - config($path, $default=false)
