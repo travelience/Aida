@@ -242,3 +242,17 @@ if(! function_exists('require_all')) {
       }
     }
   }
+
+  if (! function_exists('carbon')) {
+      function carbon($date)
+      {
+          return \Carbon\Carbon::parse($date);
+      }
+  }
+
+  if (! function_exists('now')) {
+      function now()
+      {
+          return \Carbon\Carbon::now();
+      }
+  }
