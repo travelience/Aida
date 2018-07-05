@@ -118,7 +118,9 @@ if (! function_exists('redirect')) {
 if (! function_exists('trans')) {
     function trans($key, $params=[], $default=false)
     {
-        $key = str_slug($key);
+        $key = strtolower($key);
+        $key = str_replace(' ', '', $key);
+        
         if (!isset($GLOBALS['trans'])) {
             return (!$default ? $key : $default);
         }
