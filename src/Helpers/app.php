@@ -109,8 +109,11 @@ if (! function_exists('api')) {
 if (! function_exists('redirect')) {
     function redirect($to, $code='302')
     {
+        session_forget('_input_');
+        
         header("HTTP/1.1 ". $code);
         header("Location: ". $to);
+
         die();
     }
 }
