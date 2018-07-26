@@ -281,7 +281,7 @@ when you create files inside **views/pages** automatically the routes will match
 - /views/pages/post/_id.blade.php = `/post/:id`
 
 ### Route Parameters
-To use the route parameters for example for: `/post:/id` you can use **$req->param['id']**
+To use the route parameters for example for: `/post:/id` you can use **$req->params['id']**
 
 # Localization
 To use localization you need to add in **/config/app.php** the locales you want to support, example:
