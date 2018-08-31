@@ -6,6 +6,7 @@ class Facebook
 {
     public $sdk;
     public $config;
+    public $redirect;
 
     public function __construct($config=false)
     {
@@ -23,11 +24,17 @@ class Facebook
     ]);
     }
 
+    public function redirect($redirect=false)
+    {
+        $redirect = ($redirect ? $redirect : $this->config['redirect']);
+        $redirect = ($redirect ? $redirect : current_domain());
+        return $redirect;
+    }
+
     public function login($permissions = ['email'], $redirect=false)
     {
         $helper = $this->sdk->getRedirectLoginHelper();
-        $redirect = ($redirect ? $redirect : $this->config['redirect']);
-        $redirect = ($redirect ? $redirect : current_domain());
+        $redirect = $this->redirect($redirect);
         $loginUrl = $helper->getLoginUrl($redirect, $permissions);
 
         return $loginUrl;
@@ -38,7 +45,7 @@ class Facebook
         $helper = $this->sdk->getRedirectLoginHelper();
     
         try {
-            $token = $helper->getAccessToken();
+            $token = $helper->getAccessToken($this->redirect());
 
             if (!$token) {
                 return false;
