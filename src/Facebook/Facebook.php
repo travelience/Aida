@@ -17,11 +17,11 @@ class Facebook
         }
     
         $this->sdk = new \Facebook\Facebook([
-      'app_id' => $this->config['app_id'],
-      'app_secret' => $this->config['app_secret'],
-      'default_graph_version' => 'v2.2',
-      'http_client_handler' => 'stream'
-    ]);
+            'app_id' => $this->config['app_id'],
+            'app_secret' => $this->config['app_secret'],
+            'default_graph_version' => 'v2.2',
+            'http_client_handler' => 'stream'
+        ]);
     }
 
     public function redirect($redirect=false)
@@ -55,12 +55,12 @@ class Facebook
             $user = $response->getGraphUser();
 
             $data = [
-        'id' => $user['id'],
-        'token' => $token->getValue(),
-        'first_name' => $user['first_name'],
-        'last_name' => $user['last_name'],
-        'email' => $user['email']
-      ];
+                'id' => $user['id'],
+                'token' => $token->getValue(),
+                'first_name' => $user['first_name'],
+                'last_name' => $user['last_name'],
+                'email' => $user['email']
+            ];
 
             return $data;
         } catch (Facebook\Exceptions\FacebookResponseException $e) {
