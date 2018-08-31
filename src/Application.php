@@ -74,7 +74,6 @@ class Application extends Singleton
     public function render($callback=false)
     {
         $route = $this->req->getCurrentRoute();
-
         $this->runEvents('before');
         
         if (isset($route['middlewares'])) {
@@ -96,19 +95,19 @@ class Application extends Singleton
     {
         $this->withEssentials();
         $this->runEvents('init');
-
+        
         try {
             if ($callback) {
                 return $callback($this->req, $this);
             }
-
             return $this->render();
         } catch (\Exception $e) {
-            if (property_exists($res->log, 'error')) {
-                $res->log->error($e->getMessage());
+            if (method_exists($this->log, 'error')) {
+                $this->log->error($e->getMessage());
             }
 
             $this->runEvents('error');
+            return $this->render();
         }
     }
 
