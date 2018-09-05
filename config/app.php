@@ -8,5 +8,5 @@ return [
     'locales' => [],// ['en', 'es']
     'locale' => _env('LOCALE', 'en'),
     'middleware' => false,
-    'debug' => _env('APP_DEBUG', true),
+    'debug' => _env('DEBUG', true),
 ];

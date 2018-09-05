@@ -19,7 +19,7 @@ function log_error( $num, $str, $file, $line, $context = null )
 function log_exception( $e )
 {
 
-    if( !config('app.debug') )
+    if( config('app.debug') === 'false' )
     {
         redirect('/');
     }

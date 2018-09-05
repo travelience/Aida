@@ -61,7 +61,12 @@ class Response {
            return PAGES_FOLDER . '.' . $file;
        }
 
-       return 'Aida::error';
+       if( _env('DEBUG') === 'true' )
+       {
+            return 'Aida::error';
+       }
+
+       return new \Exception("Page doesn't exists");
    }
 
    public function __get($name) 
