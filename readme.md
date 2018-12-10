@@ -616,7 +616,7 @@ the method **login()** allow to pass this parameters: `login($permissions = ['em
     // callback() can be execute only once per authorization
     if( $user = $res->facebook->callback() )
     {
-        auth($user);
+        auth()->authenticate($user);
     }
 ?>
 ```
