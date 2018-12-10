@@ -4,7 +4,7 @@ namespace Travelience\Aida\Request;
 
 trait Errors
 {
-    protected $errors = [];
+    protected $errors = false;
 
     public function setErrors($errors)
     {
@@ -66,7 +66,7 @@ trait Errors
 
     public function hasErrors()
     {
-        return count($this->errors) > 0;
+        return $this->errors;
     }
 
     public function hasError($field=false, $class=true)
