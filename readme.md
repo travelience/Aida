@@ -342,7 +342,7 @@ $req->has($key);
 $req->get($key, $default);
 $req->onSubmit();
 $req->params();
-$req->param[$key];
+$req->params[$key];
 $req->old($key, $default);
 $req->getCurrentRoute();
 ```
