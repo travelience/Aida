@@ -10,7 +10,10 @@ if (! function_exists('dispatch')) {
 
                 if (is_object($response)) {
                     mergeErrors($response);
-                    flashErrors($response->getErrorsAsString());
+
+                    if (method_exists($response, 'getErrorsAsString')) {
+                        flashErrors($response->getErrorsAsString());
+                    }
                 }
                
                 if (!$app->req->hasErrors() && is_callable($callback)) {
