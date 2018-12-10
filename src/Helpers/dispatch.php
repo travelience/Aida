@@ -7,9 +7,12 @@ if (! function_exists('dispatch')) {
         try {
             if (function_exists($method)) {
                 $response = $method($app->req, $app->res, $payload);
-                mergeErrors($response);
-                flashErrors($response->getErrorsAsString());
 
+                if (is_object($response)) {
+                    mergeErrors($response);
+                    flashErrors($response->getErrorsAsString());
+                }
+               
                 if (!$app->req->hasErrors() && is_callable($callback)) {
                     $callback($app->req, $response);
                     return;
