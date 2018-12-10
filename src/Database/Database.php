@@ -20,6 +20,7 @@ class Database extends Singleton {
         $capsule->addConnection($config);
         $capsule->setEventDispatcher(new Dispatcher(new Container));
         $capsule->setAsGlobal();
+        $capsule->bootEloquent();
         self::setPagination();
 
         $this->capsule = $capsule;

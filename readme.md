@@ -16,6 +16,8 @@
   - [Logs](#logs)
   - [Request](#request)
   - [Validations](#validations)
+  - [Database](#database)
+  - [Models](#models)
   - [Response](#response)
   - [Session](#session)
   - [Cookie](#cookie)
@@ -345,7 +347,7 @@ $req->old($key, $default);
 $req->getCurrentRoute();
 ```
 
-# Validation
+# Validations
 the **$req** also has access to the validations methods, example:
 
 ```php
@@ -576,6 +578,22 @@ $res->db->table('posts')->insert([
     'content' => 'The Content'
 ]);
 ```
+
+# Models
+Aida framework use Laravel Eloquent ORM, for more details visit: https://laravel.com/docs/5.7/eloquent
+
+1) First you have to active the database connection
+2) create a folder `/models` in the root
+3) add to your composer.json the following autoload
+```json
+  "autoload": {
+    "classmap": [
+      "models"
+    ]
+  },
+```
+
+
 
 # Facebook
 Adding a Facebook login to your website is super simple. first you need to set your **FACEBOOK_ID**, **FACEBOOK_SECRET** and **FACEBOOK_REDIRECT** in your **.env** file, and add the plugin.

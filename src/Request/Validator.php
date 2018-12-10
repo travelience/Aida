@@ -2,6 +2,8 @@
 
 namespace Travelience\Aida\Request;
 
+use Illuminate\Validation\DatabasePresenceVerifier;
+
 use Illuminate\Validation\Factory;
 use Illuminate\Translation\FileLoader;
 use Illuminate\Filesystem\Filesystem;
@@ -15,12 +17,17 @@ trait Validator
             $input = $this->all();
         }
 
+        $database = app()->context['db'];
+
         $this->errors = false;
         $locale = session('lang') ?? 'en';
 
-        $fileLoader = new FileLoader(new Filesystem, FRAMEWORK_PATH.'/config/locales/'. $locale .'/validation.php', $locale);
+        $fileLoader = new FileLoader(new Filesystem, FRAMEWORK_PATH.'/config/locales');
         $translator = new \Illuminate\Translation\Translator($fileLoader, $locale);
         $factory = new Factory($translator);
+
+        $presence = new DatabasePresenceVerifier($database->getDatabaseManager());
+        $factory->setPresenceVerifier($presence);
 
         $validator = $factory->make($input, $rules);
 
