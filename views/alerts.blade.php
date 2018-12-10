@@ -1,11 +1,17 @@
+<?php
+    $styles = [
+        'success' => 'text-white bg-green',
+        'danger' => 'text-white  bg-red',
+        'warning' => 'text-white bg-yellow-dark',
+        'info' => 'text-white bg-blue',
+        'default' => 'text-white bg-grey-dark'
+    ];
+?>
 @if( $alert = hasAlert() )
 
-    <div class="alert alert-{{ $alert['type'] }} alert-dismissible fade show text-center" role="alert">
+<div class="p-4 text-center {{ $styles[$alert['type']] }}">
     {{ $alert['message'] }}
-    <button type="button" class="close" data-dismiss="alert">
-        <span>&times;</span>
-    </button>
-    </div>
+</div>
 
 
 <?php alert_flush() ?>
