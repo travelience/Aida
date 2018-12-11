@@ -59,6 +59,8 @@ class DynamicRouter
             if (!str_contains($name, 'component')) {
                 $page = $name;
 
+                $name = str_replace('.index', '', $name);
+
                 if ($name == 'index') {
                     $name = 'home';
                 }
