@@ -10,12 +10,25 @@ class Translator
     {
         $lang = Localization::getLocale();
 
+        $translations = $this->getTranslations($lang);
+
+        if (!$translations) {
+            return false;
+        }
+
+        $GLOBALS['trans'] = $translations;
+    }
+
+    public function getTranslations($lang)
+    {
         $path = LOCALES_PATH . '/' . $lang . '.php';
 
         if (!file_exists($path)) {
             return false;
         }
 
-        $GLOBALS['trans'] = include $path;
+        $translations = include $path;
+
+        return $translations;
     }
 }

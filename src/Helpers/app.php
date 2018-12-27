@@ -119,19 +119,27 @@ if (! function_exists('redirect')) {
 }
 
 if (! function_exists('trans')) {
-    function trans($key, $params=[], $default=false)
+    function trans($key, $params=[], $lang=false)
     {
         $key = strtolower($key);
         $key = str_replace(' ', '', $key);
+
+        $translations = $GLOBALS['trans'];
+
+        if ($lang) {
+            $translator = new Travelience\Aida\Core\Translator();
+            $translations = $translator->getTranslations($lang);
+        }
         
-        if (!isset($GLOBALS['trans'])) {
-            return (!$default ? $key : $default);
+        
+        if (!isset($translations)) {
+            return $key;
         }
 
-        $text = array_get($GLOBALS['trans'], $key);
+        $text = array_get($translations, $key);
 
         if (!$text) {
-            return (!$default ? $key : $default);
+            return $key;
         }
     
         return str_params($text, $params);
@@ -139,9 +147,9 @@ if (! function_exists('trans')) {
 }
 
 if (! function_exists('__')) {
-    function __($key, $params=[], $default=false)
+    function __($key, $params=[], $lang=false)
     {
-        return trans($key, $params, $default);
+        return trans($key, $params, $lang);
     }
 }
 
@@ -234,20 +242,23 @@ if (! function_exists('array_to_ul')) {
 }
 
 
-if(! function_exists('require_all')) {
-    function require_all($path) {
-      foreach(new \DirectoryIterator($path) as $fileInfo) {
-        if($fileInfo->isDot()) continue;
-        if($fileInfo->isFile()) {
-          require_once($fileInfo->getPathname());
-        }
+if (! function_exists('require_all')) {
+    function require_all($path)
+    {
+        foreach (new \DirectoryIterator($path) as $fileInfo) {
+            if ($fileInfo->isDot()) {
+                continue;
+            }
+            if ($fileInfo->isFile()) {
+                require_once($fileInfo->getPathname());
+            }
   
-        if($fileInfo->isDir()) {
-          require_all($fileInfo->getPathname());
+            if ($fileInfo->isDir()) {
+                require_all($fileInfo->getPathname());
+            }
         }
-      }
     }
-  }
+}
 
   if (! function_exists('carbon')) {
       function carbon($date)
