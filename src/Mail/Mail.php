@@ -68,7 +68,11 @@ class Mail
 
     public function to($email, $name=false)
     {
-        $this->data['to'] = [$email => ($name ?? '') ];
+        if (is_array($email)) {
+            $this->data['to'] = $email;
+        } else {
+            $this->data['to'] = [$email => ($name ?? '') ];
+        }
     }
 
     public function content($content=false, $params=false)
